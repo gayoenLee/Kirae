@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" restorationIdentifier="ItemCell" reuseIdentifier="ItemCell" id="gTV-IL-0wX" customClass="ItemCell" customModule="WebRTCapp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="194" height="188"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="194" height="188"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sAU-er-6Fe">
+                        <rect key="frame" x="0.0" y="136" width="194" height="41"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CoU-5U-HwB">
+                        <rect key="frame" x="0.0" y="0.0" width="194" height="188"/>
+                        <subviews>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="video.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="xVc-jx-ZLc">
+                                <rect key="frame" x="19" y="127" width="34" height="31"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <imageView hidden="YES" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="mic.slash.fill" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="d7t-2K-hUC">
+                                <rect key="frame" x="67" y="126.5" width="29" height="29"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="sAU-er-6Fe" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="136" id="7sG-R0-Hyj"/>
+                <constraint firstAttribute="trailing" secondItem="sAU-er-6Fe" secondAttribute="trailing" id="Nqr-ok-YUk"/>
+                <constraint firstAttribute="bottom" secondItem="sAU-er-6Fe" secondAttribute="bottom" constant="11" id="VbK-Ps-DeK"/>
+                <constraint firstAttribute="trailing" secondItem="CoU-5U-HwB" secondAttribute="trailing" id="cT3-wz-tdU"/>
+                <constraint firstAttribute="bottom" secondItem="CoU-5U-HwB" secondAttribute="bottom" id="chb-S9-2R9"/>
+                <constraint firstItem="CoU-5U-HwB" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="j49-fG-4Vi"/>
+                <constraint firstItem="CoU-5U-HwB" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="p0j-UC-bcF"/>
+                <constraint firstItem="sAU-er-6Fe" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="sP5-hf-580"/>
+            </constraints>
+            <size key="customSize" width="194" height="188"/>
+            <connections>
+                <outlet property="VideoView" destination="CoU-5U-HwB" id="XqE-Gw-dzd"/>
+                <outlet property="micOffImg" destination="d7t-2K-hUC" id="klA-3f-LBr"/>
+                <outlet property="nameLabel" destination="sAU-er-6Fe" id="0dX-n5-fFf"/>
+                <outlet property="videoOffImg" destination="xVc-jx-ZLc" id="F47-Wl-s1i"/>
+            </connections>
+            <point key="canvasLocation" x="43.478260869565219" y="136.60714285714286"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="mic.slash.fill" catalog="system" width="108" height="128"/>
+        <image name="video.slash.fill" catalog="system" width="128" height="106"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
