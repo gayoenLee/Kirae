@@ -1,100 +1,46 @@
 # Kirae (키레)
-![Technologies](GitHubImages/technologies.png)
-WebRTCapp is a small elaboration that is part of my final degree project. This app aims to be a small video conference app created using mainly WebRTC technology. 
-With it, you can make calls though a web socket connection. 
-## OpenVidu
-The app was built based on connecting to OpenVidu , an open source project that provides 
-several libraries implementations to create video conference apps. For more info on whats the project about
-I highly recommend you to go and check the following links
 
-- [OpenVidu's Docs](http://openvidu.io/docs/home/)
+> 키레는 WebRTC 및 미디어 서버를 통한 SFU방식으로 친구들과 최대 6명까지 다대다 영상통화를 할 수 있습니다. 인공지능 기술을 활용한 얼굴필터, 손동작 인식을 이용한 게임도 할 수 있습니다.
 
-- [OpenVidu's Project Web](http://openvidu.io/)
+### Index
+- [기능](#기능)
+- [설계 및 구현](#설계-및-구현)
+- [trouble shooting](#trouble-shooting)
+- [학습한 내용](#관련-학습-내용)
 
-- [OpenVidu's GitHub](https://github.com/OpenVidu)
+---
 
-![WebRTCApp](GitHubImages/WebRTCExampleAppMixed.jpg)
+## 기능
 
-## Libraries in the project
-### WebRTC Library
-You can find the code for the WebRTC library right on WebRTC's organization [web](https://webrtc.org/native-code/android/). I wrote a briefly post on how WebRTC works internally that you can find 
-[here](https://medium.com/@SergioPaniego/how-webrtc-works-internally-b4cf678c7587). 
-On WebRTC's web you will find how to compile the binaries and generate the library but I chose an already built library called [GoogleWebRTC](https://cocoapods.org/pods/GoogleWebRTC)
+- [영상 통화](#영상-통화)
+- [얼굴 필터, 이미지&텍스트 스티커 추가](#얼굴-필터,-이미지&텍스트-스티커-추가)
+- [드로잉 퀴즈 게임](#장소-검색-및-추가)
+- [유튜브 같이 보기](#유튜브-같이-보기)
+- [텍스트 인식](#텍스트-인식)
 
-### WebSocket Starscream Library
-This library is a WebSocket client designed for Swift. It implementes the protocol definition allowing us to use a WebSocket without having to implement the whole RFC.
-Link: [Starscream Library](https://github.com/daltoniam/Starscream)
+### 영상 통화
+최대 6명의 사람들과 다대다 영상통화를 즐길 수 있습니다. 웹과 모바일 호환이 가능하며, 시그널링 서버와 WebSocket통신을 이용해 기기간 이벤트를 주고받습니다. 기본적인 비디오&오디오 켜기,끄기도 가능합니다.
 
-## How to download the project and run it
-If you want to run the project locally, you can download it using the following command. You will need an actual iOS physical device because the emulator doesn't support the video we need to add.
-   ```
-   git clone https://github.com/sergiopaniego/WebRTCapp
-   ```
-   
-As I mentioned above, the app is part of a final degree project and for that 
-reason the address that comes built in the app points to [https://demos.openvidu.io/basic-videoconference/](https://demos.openvidu.io/basic-videoconference/). This URL hosts an OpenVidu's demo app that you can use to test that 
-everything works as expected.
 
-## Development Environment
- How did I developed the app? Tools I used 
-### XCode 9
-This is the most commonly used iOS development IDE. You can download it directly from the AppStore.
-### iPad
-As device to test the app I used an iPad with iOS 10.2 installed.
-## App Permissions
-The first time you open the app, it will ask you to give some permissions to the app. The permissions and the reason why we need the is the following:
--	Camera: This permission is compulsory because it wouldn’t make any sense to make a video conference app without using the camera, would it?
--	Record Audio: We need this permission to allow you to share your beautiful voice with the crowd on the other side of the conversation.
+### 얼굴 필터, 이미지& 테스트 스티커 추가
+OpenCV를 기반으로 한 Kurento FaceOverlay Filter 모듈로 얼굴에 필터를 씌울 수 있습니다. 
+또한 Kurento Image Overlay 모듈과 직접 커스텀한 TextOverlay모듈을 이용했습니다. 텍스트를 입력하거나 이미지를 선택해 화면에 스티커 추가가 됩니다. 또한 스티커들은 사용자가 원하는 위치에 이동시키고 크기를 조정할 수 있습니다. 
 
-## Understanding the code
-![Scheme](GitHubImages/scheme.png)
-The code is divided in some packages to make the code easier to mantain.
- - WebSocketListener: This class implements WebSocketDelegate. As its name suggest, this class responsibility is to listen what comes to the socket we have.
- It handles the messages sent by the server
- - PeersManager: Its purpose is to manage the different peers that make a conversation
- - RemoteParticipant: The participants info goes here
- - Views Controllers: This controllers take care of the views out app uses. The first one takes the info to start the session and the second one is the actual session with its video views.
- 
- The WebSocket Address is passed to the VideosViewController using a segue and this information is then uses to start the connection
- 
- ```
-        override func prepare(for segue: UIStoryboardSegue, sender: Any?)
-    {
-        if segue.destination is VideosViewController
-        {
-            let vc = segue.destination as? VideosViewController
-            vc?.url = url.text!
-            vc?.sessionName = sessionName.text!
-            vc?.participantName = participantName.text!
-        }
-    }
-```
-            
- 
- *url* represents the url the socket will try to connect to.
- *participantName* the name you give to the participant and 
- *sessionName* the session name. This 3 fields are used to complete the address used to connect to the WebScoket.
- 
- ```
-    socket = WebSocket(url: URL(string: url)!)
-    socket.connect()
- ```
- 
-In this part of the code is where the connecting happens, using the address that is built using the fields above. 
+## 드로잉 퀴즈 게임
+참가자당 2문제씩 제시된 단어에 맞춰 그림을 그리고 상대방은 10초 안에 정답을 맞추는 게임입니다. 그림은 게임 참가자 모두에게 공유가 되고 되돌리기, 전체 삭제하기가 가능합니다.
 
-Once the connection is established, you need to join a room, what it's made as follows
-```
-    var joinRoomParams: [String: String] = [:]
-    joinRoomParams["recorder"] = "false"
-    joinRoomParams[JSONConstants.Metadata] = "{\"clientData\": \"" + participantName + "\"}"
-    joinRoomParams["secret"] = "MY_SECRET"
-    joinRoomParams["session"] = sessionName
-    joinRoomParams["token"] = token
-    sendJson(method: "joinRoom", params: joinRoomParams)
-```
-Using a JSON using RPC 2.0 with joinRoom method and the params that are shown here you can connect to the room
-Same process to leave the room, you just have to send 
-```
-    self.socket?.sendJson(method: "leaveRoom", params: [:])
-```
-a JSON RPC 2.0 with the method leaveRoom and empty params.
+## 유튜브 같이보기
+Youtube API를 이용해 영상통화중에 친구들과 유튜브 컨텐츠를 공유 or 원하는 영상을 검색해 볼 수 있습니다.
+
+ ---
+## Trouble Shooting
+###
+
+
+ ---
+
+ ## 설계 및 구현
+
+ ### 서버 아키텍처
+
+ ### ViewController간 data 주고 받기 - Delegate 사용
