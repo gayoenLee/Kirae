@@ -1,13 +1,18 @@
-# Kirae (키레)
+
+<img src="https://github.com/user-attachments/assets/64f78852-c3c9-46c7-b4ed-6c058cdacf7e" width="50">
+
+## 키레 
 
 > 키레는 WebRTC 및 미디어 서버를 통한 SFU방식으로 친구들과 최대 6명까지 다대다 영상통화를 할 수 있습니다. 인공지능 기술을 활용한 얼굴필터, 손동작 인식을 이용한 게임도 할 수 있습니다.
-
+  
+&nbsp;
 ### Index
 - [기능](#기능)
 - [설계 및 구현](#설계-및-구현)
 - [trouble shooting](#trouble-shooting)
 - [학습 내용](#관련-학습-내용)
-
+  
+&nbsp;
 ---
 
 ## 기능
