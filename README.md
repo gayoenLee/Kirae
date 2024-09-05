@@ -5,7 +5,7 @@
 ### Index
 - [기능](#기능)
 - [설계 및 구현](#설계-및-구현)
-- [trouble shooting](#Trouble-shooting)
+- [trouble shooting](#trouble-shooting)
 - [학습 내용](#관련-학습-내용)
 
 ---
@@ -13,30 +13,134 @@
 ## 기능
 
 - [영상 통화](#영상-통화)
-- [얼굴 필터, 이미지&텍스트 스티커 추가](#얼굴-필터,-이미지&텍스트-스티커-추가)
-- [드로잉 퀴즈 게임](#장소-검색-및-추가)
+- [얼굴 필터, 이미지와 텍스트 스티커 추가](#얼굴-필터-이미지와-텍스트-스티커-추가)
+- [드로잉 퀴즈 게임](#드로잉-퀴즈-게임)
 - [유튜브 같이 보기](#유튜브-같이-보기)
-- [텍스트 인식](#텍스트-인식)
+  
+&nbsp;
 
 ### 영상 통화
 최대 6명의 사람들과 다대다 영상통화를 즐길 수 있습니다. 웹과 모바일 호환이 가능하며, 시그널링 서버와 WebSocket통신을 이용해 기기간 이벤트를 주고받습니다. 기본적인 비디오&오디오 켜기,끄기도 가능합니다.
+![IMG_9346](https://github.com/user-attachments/assets/36be2619-a9f2-46ca-adb4-5b5132ccc6b8)
 
-
-### 얼굴 필터, 이미지& 테스트 스티커 추가
+&nbsp;
+### 얼굴 필터, 이미지와 텍스트 스티커 추가
 OpenCV를 기반으로 한 Kurento FaceOverlay Filter 모듈로 얼굴에 필터를 씌울 수 있습니다. 
 또한 Kurento Image Overlay 모듈과 직접 커스텀한 TextOverlay모듈을 이용했습니다. 텍스트를 입력하거나 이미지를 선택해 화면에 스티커 추가가 됩니다. 또한 스티커들은 사용자가 원하는 위치에 이동시키고 크기를 조정할 수 있습니다. 
+| 얼굴 필터 씌우기 | 텍스트, 이미지 스티커 크기&위치 조정 |
+| :------: | :--------: |
+|<img width="250" alt="IMG_9358" src="https://github.com/user-attachments/assets/9f42f6cc-3cd5-4315-806a-8acfcaa95ca6">|<img width="250" alt="IMG_9360" src="https://github.com/user-attachments/assets/2f342434-4faa-4904-8a54-c5bf61feeba0">|
 
 ## 드로잉 퀴즈 게임
 참가자당 2문제씩 제시된 단어에 맞춰 그림을 그리고 상대방은 10초 안에 정답을 맞추는 게임입니다. 그림은 게임 참가자 모두에게 공유가 되고 되돌리기, 전체 삭제하기가 가능합니다.
+| 주어진 단어에 그림 그리기 | 손을 올려서 정답창 나타나게 하기 |
+| :-: | :-: |
+| <img src="https://github.com/user-attachments/assets/6d462d91-4b61-4dcd-b719-ed591f3717fa" width="250"> | <img src="https://github.com/user-attachments/assets/9aaf7a66-75bc-414c-859a-1d7d44114cf1" width="250">  |
 
-## 유튜브 같이보기
+## 유튜브 같이 보기
 Youtube API를 이용해 영상통화중에 친구들과 유튜브 컨텐츠를 공유 or 원하는 영상을 검색해 볼 수 있습니다.
+<p float="left">
+<img src="https://github.com/user-attachments/assets/c8061efb-de1a-4891-b42d-2fec1cecf0c9" width="250">
+</p>
+
 
  ---
-## Trouble Shooting
+## trouble Shooting
+- WebRTC 이벤트 송수신을 위한 Listener클래스 구현의 샘플 코드가 Javascript로만 되어 있었다.
+=> 해결 : Swift로 모두 변환하는 작업 진행해 클래스 구현
+
+- 화상 통화 및 미팅에서 사용자간에 latency를 느끼지 않게 만들 수 있는 프로토콜을 선정해야 했다.
+=> 해결 :  프로토콜에는 WebRTC, RTMP등의 프로토콜이 존재.
+
+-P2P방식으로 다자간 화상 통화 구현시 클라이언트의 과부하가 심해질 수 있다.
+=> 클라이언트의 부하를 줄이기 위해 WebRTC를 이용한 서버 아키텍처 설계 방법에는 MFU, SFU, 시그널링서버등이 있다.
+=> 웹RTC는 기본적으로 일대일(peer to peer, 이하 P2P) 미디어 통신(secured real time media transport) 기술의 세계 표준이지만, 다자간 화상회의나 방송 스트리밍 등에도 이용할 수 있다. 하지만 P2P 방식으로 다수 인원의 데이터 송수신을 지원할 경우 클라이언트 쪽의 과부하가 심해지기 때문에 이때는 미디어 서버를 사용하게 된다.
 
 ---
 ## 관련 학습 내용
+
+### ✅socket을 사용하지 않고 http로만 구현한다면 어떻게 할지?
+
+- 🔹**Socket : 연결 지향형 방식**
+    
+    Server ↔ client가 **특정 포트**를 통해 실시간으로 **양방향 통신**을 하는 방식.
+    
+    특정 포트를 통해 **연결을 유지**하고 있어서 ***실시간*** 양방향 통신이 가능한 것.
+    
+    →**server도** client로 요청을 보낼 수 있음.
+    
+    ex) 동영상  스트리밍 서비스
+    
+    http프로그래밍으로 구현하면 동영상이 종료될 때까지 http request를 보내야 함. → 부하 발생 가능.
+    
+
+- 🔹**HTTP : 단방향적 통신**
+    
+    application계층의 연결 방식.
+    
+    ***client의 요청***이 있을 때에만!! → server가 응답해서 처리 → ***연결 끊음.***
+    
+    ⇒실시간 연결 x
+    
+    ⇒필요한 경우에만 server로 접근하는 콘텐츠 위주 데이터를 사용할 때 용이.
+  
+
+### ✅ setNeedsLayout, layoutIfNeeded
+
+둘 다 UIView의 메소드. 최종적으로 layoutSubviews를 호출하는 예약메소드.
+
+❓읽어볼 것
+
+[Demystifying iOS Layout](https://tech.gc.com/demystifying-ios-layout/)
+
+🔹main run loop개념을 알아야 함
+
+👉어플리케이션이 실행되면 UIApplication이 메인 스레드에서 main run loop를 실행 → main run  loop는 돌아가면서 터치 이벤트, 위치의 변화, 디바이스의 회전 등 각종 이벤트들을 처리. 
+how? 
+각 이벤트들에 맞는 핸들러를 찾아서 그들에게 권한을 위임하여 진행.
+
+ex) @IBAction이 버튼의 터치 이벤트를 처리하는 것과 같다.
+
+👉발생한 이벤트들을 모두 처리하고 권한이 다시 main run  loop로 돌아오게 됨. = **update cycle**
+
+🔹update cycle
+
+main run loop에서 버튼을 클릭하면 크기나 위치가 이동하는 애니메이션처럼 layout이나 position을 바꾸는 핸들러가 실행되는 경우 → 즉각 반영x
+
+how?
+
+시스템은 layout이나 position이 변화되는 view들을 체크 → 모든 핸들러가 종료되고 main run loop로 다시 돌아옴 = update cycle 
+
+-이때 view들의 값을 바꿔줘서 Position이나 layout의 변화를 적용.
+
+🔹관련 메소드
+
+- layoutSubViews()
+View의 값을 호출한 즉시 변경시켜주는 메소드.
+호출되면 해당 View의 모든 SubView들의 layoutSubviews()또한 연달아 호출됨.  
+⇒ 비용이 많이 드는 메소드.
+⇒ 직접 호출이 지양됨.
+⇒ 시스템에 의해서 View의 값이 재계산돼야 하는 적절한 시점에 자동으로 호출됨.
+⇒layoutSubviews를 유도할 수 있는 방법 존재. = update cycle에서 layoutSubViews의 호출을 예약하는 행위.
+
+🤔layoutSubViews가 자동으로 호출되는 경우는?
+ ☑️View의 크기를 조절할 때
+ ☑️SubView를 추가할 때
+ ☑️사용자가 UIScrollView를 스크롤할 때
+ ☑️디바이스를 회전시켰을 때
+ ☑️View의 AutoLayout constraint값을 변경시켰을 때
+- **setNeedsLayout()**
+layoutSubviews를 위의경우 말고 예약 가능한 메소드.
+- 가장 비용이 적게 드는 방법.
+- **비동기적**으로 작동 → 호출되고 바로 반환된다.
+- **layoutIfNeeded()**
+예약을 '바로' 실행시키는 동기적으로 작동하는 메소드.
+update cycle이 올때까지 기다려서 layoutSubviews를 호출하는 것이 아니라
+
+그 **즉시** layoutSubViews를 발동시키는 메소드.
+ex) 즉시 값이 변경돼야 하는 애니메이션에서 많이 사용됨
+
+
 다대다 화상통화 로직 정리
 
 ### 1. PeersManager
